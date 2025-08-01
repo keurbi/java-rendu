@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Catégories - Recipe App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'recipe-orange': '#FF6B35',
+                        'recipe-red': '#D63031',
+                        'recipe-green': '#00B894',
+                        'recipe-yellow': '#FDCB6E'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-orange-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b-4 border-recipe-orange">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-recipe-red">🍳 Recipe App</h1>
+                </div>
+                <div class="flex space-x-6">
+                    <a th:href="@{/}" class="text-gray-700 hover:text-recipe-orange font-medium">Accueil</a>
+                    <a th:href="@{/recipes}" class="text-gray-700 hover:text-recipe-orange font-medium">Recettes</a>
+                    <a th:href="@{/categories}" class="text-recipe-orange font-bold">Catégories</a>
+                    <a th:href="@{/users}" class="text-gray-700 hover:text-recipe-orange font-medium">Utilisateurs</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800" th:text="${title}">Liste des Catégories</h1>
+            <button class="bg-recipe-green text-white px-6 py-2 rounded-full font-medium hover:bg-green-600 transition">
+                + Nouvelle Catégorie
+            </button>
+        </div>
+
+        <!-- Placeholder pour les catégories -->
+        <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+            <div class="text-6xl mb-4">🏷️</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Aucune catégorie pour le moment</h2>
+            <p class="text-gray-600 mb-6">Les catégories seront affichées ici une fois la base de données configurée.</p>
+            <div class="text-sm text-gray-500">
+                <p>Catégories prévues : Entrées, Plats principaux, Desserts, Boissons, etc.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Recipe App - Application de gestion de recettes</p>
+        </div>
+    </footer>
+</body>
+</html>

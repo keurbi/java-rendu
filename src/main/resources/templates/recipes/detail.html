@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${recipe.title + ' - Recipe App'}">
+      Détail Recette - Recipe App
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "recipe-orange": "#FF6B35",
+              "recipe-red": "#D63031",
+              "recipe-green": "#00B894",
+              "recipe-yellow": "#FDCB6E",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-orange-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b-4 border-recipe-orange">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-4">
+            <h1 class="text-2xl font-bold text-recipe-red">🍳 Recipe App</h1>
+          </div>
+          <div class="flex space-x-6">
+            <a
+              th:href="@{/}"
+              class="text-gray-700 hover:text-recipe-orange font-medium"
+              >Accueil</a
+            >
+            <a th:href="@{/recipes}" class="text-recipe-orange font-bold"
+              >Recettes</a
+            >
+            <a
+              th:href="@{/categories}"
+              class="text-gray-700 hover:text-recipe-orange font-medium"
+              >Catégories</a
+            >
+            <a
+              th:href="@{/users}"
+              class="text-gray-700 hover:text-recipe-orange font-medium"
+              >Utilisateurs</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+      <div class="max-w-7xl mx-auto px-4 py-3">
+        <nav class="text-sm">
+          <a th:href="@{/}" class="text-recipe-orange hover:underline"
+            >Accueil</a
+          >
+          <span class="mx-2 text-gray-500">/</span>
+          <a th:href="@{/recipes}" class="text-recipe-orange hover:underline"
+            >Recettes</a
+          >
+          <span class="mx-2 text-gray-500">/</span>
+          <span class="text-gray-700" th:text="${recipe.title}"
+            >Détail de la recette</span
+          >
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Recipe Details -->
+        <div class="lg:col-span-2">
+          <!-- Header -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
+            <img
+              th:src="${recipe.imageUrl}"
+              th:alt="${recipe.title}"
+              class="w-full h-64 object-cover"
+              onerror="this.src='https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800'"
+            />
+            <div class="p-6">
+              <h1
+                class="text-3xl font-bold text-gray-800 mb-4"
+                th:text="${recipe.title}"
+              >
+                Titre de la recette
+              </h1>
+              <p class="text-gray-600 mb-6" th:text="${recipe.description}">
+                Description de la recette
+              </p>
+
+              <!-- Recipe Meta -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div
+                  class="text-center bg-recipe-orange bg-opacity-10 p-3 rounded"
+                >
+                  <div class="text-2xl text-recipe-orange">⏱️</div>
+                  <div class="text-sm text-gray-600">Temps total</div>
+                  <div
+                    class="font-bold"
+                    th:text="${recipe.totalTimeMinutes + ' min'}"
+                  >
+                    45 min
+                  </div>
+                </div>
+                <div
+                  class="text-center bg-recipe-green bg-opacity-10 p-3 rounded"
+                >
+                  <div class="text-2xl text-recipe-green">👥</div>
+                  <div class="text-sm text-gray-600">Portions</div>
+                  <div
+                    class="font-bold"
+                    th:text="${recipe.servings + ' pers.'}"
+                  >
+                    4 pers.
+                  </div>
+                </div>
+                <div
+                  class="text-center bg-recipe-yellow bg-opacity-10 p-3 rounded"
+                >
+                  <div class="text-2xl text-recipe-yellow">📊</div>
+                  <div class="text-sm text-gray-600">Difficulté</div>
+                  <div
+                    class="font-bold"
+                    th:text="${recipe.difficulty?.displayName}"
+                  >
+                    Moyen
+                  </div>
+                </div>
+                <div
+                  class="text-center bg-recipe-red bg-opacity-10 p-3 rounded"
+                >
+                  <div class="text-2xl text-recipe-red">⭐</div>
+                  <div class="text-sm text-gray-600">Note</div>
+                  <div
+                    class="font-bold"
+                    th:text="${#numbers.formatDecimal(recipe.rating, 1, 1) + '/5'}"
+                  >
+                    4.5/5
+                  </div>
+                </div>
+              </div>
+
+              <!-- Author and Category -->
+              <div
+                class="flex flex-wrap items-center justify-between text-sm text-gray-600 mb-6"
+              >
+                <div class="flex items-center space-x-2 mb-2" th:if="${author}">
+                  <span>👨‍🍳 Par</span>
+                  <a
+                    th:href="@{/users/{id}(id=${author.id})}"
+                    class="text-recipe-orange hover:underline font-medium"
+                    th:text="${author.fullName}"
+                    >Chef</a
+                  >
+                </div>
+                <div
+                  class="flex items-center space-x-2 mb-2"
+                  th:if="${category}"
+                >
+                  <span>🏷️</span>
+                  <a
+                    th:href="@{/categories/{id}(id=${category.id})}"
+                    class="text-recipe-orange hover:underline font-medium"
+                    th:text="${category.name}"
+                    >Catégorie</a
+                  >
+                </div>
+              </div>
+
+              <!-- Tags -->
+              <div
+                th:if="${recipe.tags != null and !recipe.tags.empty}"
+                class="mb-6"
+              >
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    th:each="tag : ${recipe.tags}"
+                    class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                    th:text="'#' + ${tag}"
+                    >#tag</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ingredients -->
+          <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+              🛒 Ingrédients
+            </h2>
+            <ul class="space-y-2">
+              <li
+                th:each="ingredient : ${recipe.ingredients}"
+                class="flex items-center p-2 hover:bg-gray-50 rounded"
+              >
+                <input type="checkbox" class="mr-3 text-recipe-orange" />
+                <span class="flex-1" th:text="${ingredient.toString()}"
+                  >Ingrédient</span
+                >
+                <span
+                  th:if="${ingredient.optional}"
+                  class="text-xs text-gray-500 italic"
+                  >(optionnel)</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Instructions -->
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+              👨‍🍳 Instructions
+            </h2>
+            <div class="space-y-4">
+              <div
+                th:each="instruction : ${recipe.instructions}"
+                class="flex border-b pb-4 last:border-b-0"
+              >
+                <div
+                  class="flex-shrink-0 w-8 h-8 bg-recipe-orange text-white rounded-full flex items-center justify-center font-bold mr-4"
+                  th:text="${instruction.stepNumber}"
+                >
+                  1
+                </div>
+                <div class="flex-1">
+                  <p class="text-gray-700" th:text="${instruction.description}">
+                    Description de l'étape
+                  </p>
+                  <div
+                    th:if="${instruction.timeMinutes}"
+                    class="text-sm text-gray-500 mt-1"
+                  >
+                    ⏱️
+                    <span th:text="${instruction.timeMinutes + ' minutes'}"
+                      >5 minutes</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <!-- Nutrition Info -->
+          <div
+            th:if="${recipe.nutritionInfo}"
+            class="bg-white rounded-lg shadow-lg p-6 mb-8"
+          >
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              📊 Informations Nutritionnelles
+            </h3>
+            <div class="space-y-2 text-sm">
+              <div
+                th:if="${recipe.nutritionInfo.calories}"
+                class="flex justify-between"
+              >
+                <span>Calories:</span>
+                <span
+                  class="font-bold"
+                  th:text="${recipe.nutritionInfo.calories + ' kcal'}"
+                  >250 kcal</span
+                >
+              </div>
+              <div
+                th:if="${recipe.nutritionInfo.protein}"
+                class="flex justify-between"
+              >
+                <span>Protéines:</span>
+                <span
+                  class="font-bold"
+                  th:text="${recipe.nutritionInfo.protein + ' g'}"
+                  >12 g</span
+                >
+              </div>
+              <div
+                th:if="${recipe.nutritionInfo.carbohydrates}"
+                class="flex justify-between"
+              >
+                <span>Glucides:</span>
+                <span
+                  class="font-bold"
+                  th:text="${recipe.nutritionInfo.carbohydrates + ' g'}"
+                  >30 g</span
+                >
+              </div>
+              <div
+                th:if="${recipe.nutritionInfo.fat}"
+                class="flex justify-between"
+              >
+                <span>Lipides:</span>
+                <span
+                  class="font-bold"
+                  th:text="${recipe.nutritionInfo.fat + ' g'}"
+                  >15 g</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Similar Recipes -->
+          <div
+            th:if="${similarRecipes != null and !similarRecipes.empty}"
+            class="bg-white rounded-lg shadow-lg p-6"
+          >
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              🔍 Recettes similaires
+            </h3>
+            <div class="space-y-4">
+              <div th:each="similar : ${similarRecipes}" class="flex space-x-3">
+                <img
+                  th:src="${similar.imageUrl}"
+                  th:alt="${similar.title}"
+                  class="w-16 h-16 object-cover rounded"
+                  onerror="this.src='https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100'"
+                />
+                <div class="flex-1">
+                  <a
+                    th:href="@{/recipes/{id}(id=${similar.id})}"
+                    class="text-sm font-medium text-gray-800 hover:text-recipe-orange line-clamp-2"
+                    th:text="${similar.title}"
+                    >Titre similaire</a
+                  >
+                  <div class="text-xs text-gray-500 mt-1">
+                    ⏱️
+                    <span th:text="${similar.totalTimeMinutes + ' min'}"
+                      >30 min</span
+                    >
+                    • ⭐
+                    <span
+                      th:text="${#numbers.formatDecimal(similar.rating, 1, 1)}"
+                      >4.2</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <div class="flex justify-center space-x-6 mb-4">
+          <a th:href="@{/}" class="hover:text-recipe-orange">Accueil</a>
+          <a th:href="@{/recipes}" class="hover:text-recipe-orange">Recettes</a>
+          <a th:href="@{/categories}" class="hover:text-recipe-orange"
+            >Catégories</a
+          >
+          <a th:href="@{/users}" class="hover:text-recipe-orange"
+            >Utilisateurs</a
+          >
+        </div>
+        <p class="text-gray-400">
+          &copy; 2025 Recipe App. Fait avec ❤️ pour les passionnés de cuisine.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

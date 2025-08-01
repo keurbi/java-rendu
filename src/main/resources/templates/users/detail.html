@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${user.fullName + ' - Recipe App'}">
+      Profil Utilisateur - Recipe App
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "recipe-orange": "#FF6B35",
+              "recipe-red": "#D63031",
+              "recipe-green": "#00B894",
+              "recipe-yellow": "#FDCB6E",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-orange-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b-4 border-recipe-orange">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-4">
+            <h1 class="text-2xl font-bold text-recipe-red">🍳 Recipe App</h1>
+          </div>
+          <div class="flex space-x-6">
+            <a
+              th:href="@{/}"
+              class="text-gray-700 hover:text-recipe-orange font-medium"
+              >Accueil</a
+            >
+            <a
+              th:href="@{/recipes}"
+              class="text-gray-700 hover:text-recipe-orange font-medium"
+              >Recettes</a
+            >
+            <a
+              th:href="@{/categories}"
+              class="text-gray-700 hover:text-recipe-orange font-medium"
+              >Catégories</a
+            >
+            <a th:href="@{/users}" class="text-recipe-orange font-bold"
+              >Utilisateurs</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+      <div class="max-w-7xl mx-auto px-4 py-3">
+        <nav class="text-sm">
+          <a th:href="@{/}" class="text-recipe-orange hover:underline"
+            >Accueil</a
+          >
+          <span class="mx-2 text-gray-500">/</span>
+          <a th:href="@{/users}" class="text-recipe-orange hover:underline"
+            >Utilisateurs</a
+          >
+          <span class="mx-2 text-gray-500">/</span>
+          <span class="text-gray-700" th:text="${user.fullName}"
+            >Nom de l'utilisateur</span
+          >
+        </nav>
+      </div>
+    </div>
+
+    <!-- User Profile Header -->
+    <div
+      class="bg-gradient-to-r from-recipe-orange to-recipe-red text-white py-16"
+    >
+      <div class="max-w-7xl mx-auto px-4">
+        <div
+          class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8"
+        >
+          <!-- Profile Image -->
+          <div class="flex-shrink-0">
+            <img
+              th:src="${user.profileImageUrl}"
+              th:alt="${user.fullName}"
+              class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+              onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300'"
+            />
+          </div>
+
+          <!-- Profile Info -->
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-4xl font-bold mb-2" th:text="${user.fullName}">
+              Nom Complet
+            </h1>
+            <p class="text-xl opacity-90 mb-2">
+              @<span th:text="${user.username}">username</span>
+            </p>
+
+            <!-- Admin Badge -->
+            <div th:if="${user.admin}" class="mb-4">
+              <span
+                class="bg-recipe-yellow bg-opacity-20 text-recipe-yellow px-3 py-1 rounded-full text-sm font-semibold"
+              >
+                👑 Administrateur
+              </span>
+            </div>
+
+            <!-- Bio -->
+            <p
+              th:if="${user.bio}"
+              class="text-lg opacity-90 mb-6 max-w-2xl"
+              th:text="${user.bio}"
+            >
+              Biographie de l'utilisateur...
+            </p>
+
+            <!-- Stats -->
+            <div class="flex flex-wrap justify-center md:justify-start gap-6">
+              <div class="text-center">
+                <div class="text-2xl font-bold" th:text="${totalRecipes}">
+                  12
+                </div>
+                <div class="text-sm opacity-75">Recettes créées</div>
+              </div>
+              <div class="text-center">
+                <div
+                  class="text-2xl font-bold"
+                  th:text="${#lists.size(userRecipes)}"
+                >
+                  8
+                </div>
+                <div class="text-sm opacity-75">Recettes publiées</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold">
+                  <span
+                    th:if="${user.favoriteRecipeIds}"
+                    th:text="${#lists.size(user.favoriteRecipeIds)}"
+                    >5</span
+                  >
+                  <span th:unless="${user.favoriteRecipeIds}">0</span>
+                </div>
+                <div class="text-sm opacity-75">Favoris</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <div class="grid lg:grid-cols-4 gap-8">
+        <!-- User Info Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              📋 Informations
+            </h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Membre depuis:</span>
+                <span
+                  class="font-medium"
+                  th:text="${#temporals.format(user.createdAt, 'MMM yyyy')}"
+                  >Jan 2025</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Email:</span>
+                <span class="font-medium" th:text="${user.email}"
+                  >email@exemple.com</span
+                >
+              </div>
+              <div th:if="${user.roles}" class="flex justify-between">
+                <span class="text-gray-600">Rôles:</span>
+                <div>
+                  <span
+                    th:each="role, iterStat : ${user.roles}"
+                    class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs mr-1"
+                    th:text="${role}"
+                    >ROLE</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Actions -->
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">📞 Actions</h3>
+            <div class="space-y-3">
+              <a
+                th:href="@{/recipes/author/{id}(id=${user.id})}"
+                class="block w-full bg-recipe-orange text-white text-center py-2 px-4 rounded hover:bg-recipe-red transition"
+              >
+                Voir toutes ses recettes
+              </a>
+              <button
+                class="block w-full bg-recipe-green text-white text-center py-2 px-4 rounded hover:bg-green-600 transition"
+              >
+                Suivre ce chef
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User's Recipes -->
+        <div class="lg:col-span-3">
+          <h2 class="text-3xl font-bold text-gray-800 mb-8">
+            🍳 Recettes de
+            <span th:text="${user.firstName ?: user.username}"
+              >l'utilisateur</span
+            >
+          </h2>
+
+          <!-- Empty State -->
+          <div
+            th:if="${userRecipes == null or userRecipes.empty}"
+            class="text-center py-16"
+          >
+            <div class="text-6xl mb-4">📝</div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">
+              Aucune recette publiée
+            </h3>
+            <p class="text-gray-600">
+              Cet utilisateur n'a pas encore publié de recettes.
+            </p>
+          </div>
+
+          <!-- Recipes Grid -->
+          <div
+            th:if="${userRecipes != null and !userRecipes.empty}"
+            class="grid md:grid-cols-2 gap-8"
+          >
+            <div
+              th:each="recipe : ${userRecipes}"
+              class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition"
+            >
+              <img
+                th:src="${recipe.imageUrl}"
+                th:alt="${recipe.title}"
+                class="w-full h-48 object-cover"
+                onerror="this.src='https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400'"
+              />
+              <div class="p-6">
+                <h4
+                  class="text-xl font-bold text-gray-800 mb-2"
+                  th:text="${recipe.title}"
+                >
+                  Titre de la recette
+                </h4>
+                <p
+                  class="text-gray-600 mb-4"
+                  th:text="${#strings.abbreviate(recipe.description, 100)}"
+                >
+                  Description courte de la recette...
+                </p>
+
+                <!-- Recipe Meta -->
+                <div
+                  class="flex justify-between items-center text-sm text-gray-500 mb-4"
+                >
+                  <span class="flex items-center">
+                    ⏱️
+                    <span
+                      class="ml-1"
+                      th:text="${recipe.totalTimeMinutes + ' min'}"
+                      >30 min</span
+                    >
+                  </span>
+                  <span class="flex items-center">
+                    👥
+                    <span class="ml-1" th:text="${recipe.servings + ' pers.'}"
+                      >4 pers.</span
+                    >
+                  </span>
+                  <span class="flex items-center">
+                    ⭐
+                    <span
+                      class="ml-1"
+                      th:text="${#numbers.formatDecimal(recipe.rating, 1, 1)}"
+                      >4.5</span
+                    >
+                  </span>
+                </div>
+
+                <!-- Difficulty and Views -->
+                <div class="flex justify-between items-center mb-4">
+                  <span
+                    class="inline-block px-3 py-1 text-xs font-semibold rounded-full"
+                    th:classappend="${recipe.difficulty?.name() == 'FACILE'} ? 'bg-green-100 text-green-800' : 
+                                                    (${recipe.difficulty?.name() == 'MOYEN'} ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800')"
+                    th:text="${recipe.difficulty?.displayName}"
+                    >Moyen</span
+                  >
+                  <span class="text-xs text-gray-500">
+                    👁️ <span th:text="${recipe.viewCount}">125</span> vues
+                  </span>
+                </div>
+
+                <a
+                  th:href="@{/recipes/{id}(id=${recipe.id})}"
+                  class="block bg-recipe-orange text-white text-center py-2 px-4 rounded hover:bg-recipe-red transition"
+                >
+                  Voir la recette
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Show More Button -->
+          <div
+            th:if="${userRecipes != null and userRecipes.size() >= 6}"
+            class="text-center mt-8"
+          >
+            <a
+              th:href="@{/recipes/author/{id}(id=${user.id})}"
+              class="bg-recipe-green text-white px-6 py-3 rounded-full font-bold hover:bg-green-600 transition"
+            >
+              Voir toutes ses recettes (<span th:text="${totalRecipes}">12</span
+              >)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <div class="flex justify-center space-x-6 mb-4">
+          <a th:href="@{/}" class="hover:text-recipe-orange">Accueil</a>
+          <a th:href="@{/recipes}" class="hover:text-recipe-orange">Recettes</a>
+          <a th:href="@{/categories}" class="hover:text-recipe-orange"
+            >Catégories</a
+          >
+          <a th:href="@{/users}" class="hover:text-recipe-orange"
+            >Utilisateurs</a
+          >
+        </div>
+        <p class="text-gray-400">
+          &copy; 2025 Recipe App. Fait avec ❤️ pour les passionnés de cuisine.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

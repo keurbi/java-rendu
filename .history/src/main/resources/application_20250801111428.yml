@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: recipe-app
+  
+  # Configuration Firestore (à compléter après création du projet Firebase)
+  cloud:
+    gcp:
+      project-id: # À remplir avec votre project-id Firebase
+      firestore:
+        database-id: "(default)"
+      credentials:
+        location: classpath:firebase/service-account-key.json
+
+  # Configuration Thymeleaf
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+  # Configuration de sécurité
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+
+server:
+  port: 8080
+
+# Configuration des logs
+logging:
+  level:
+    com.example.recipeapp: DEBUG
+    com.google.cloud: INFO

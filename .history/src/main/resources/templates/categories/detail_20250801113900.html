@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${category.name + ' - Recipe App'}">Catégorie - Recipe App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'recipe-orange': '#FF6B35',
+                        'recipe-red': '#D63031',
+                        'recipe-green': '#00B894',
+                        'recipe-yellow': '#FDCB6E'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-orange-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b-4 border-recipe-orange">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-recipe-red">🍳 Recipe App</h1>
+                </div>
+                <div class="flex space-x-6">
+                    <a th:href="@{/}" class="text-gray-700 hover:text-recipe-orange font-medium">Accueil</a>
+                    <a th:href="@{/recipes}" class="text-gray-700 hover:text-recipe-orange font-medium">Recettes</a>
+                    <a th:href="@{/categories}" class="text-recipe-orange font-bold">Catégories</a>
+                    <a th:href="@{/users}" class="text-gray-700 hover:text-recipe-orange font-medium">Utilisateurs</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <nav class="text-sm">
+                <a th:href="@{/}" class="text-recipe-orange hover:underline">Accueil</a>
+                <span class="mx-2 text-gray-500">/</span>
+                <a th:href="@{/categories}" class="text-recipe-orange hover:underline">Catégories</a>
+                <span class="mx-2 text-gray-500">/</span>
+                <span class="text-gray-700" th:text="${category.name}">Nom de la catégorie</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Category Header -->
+    <div class="py-16" th:style="'background: linear-gradient(135deg, ' + ${category.color ?: '#FF6B35'} + ', ' + ${category.color ?: '#D63031'} + ');'">
+        <div class="max-w-7xl mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl font-bold mb-4" th:text="${category.name}">Nom de la catégorie</h1>
+            <p class="text-xl mb-8" th:text="${category.description}">Description de la catégorie</p>
+            <div class="text-lg">
+                <span th:text="${#lists.size(recipes)}">12</span> recettes dans cette catégorie
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes List -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+        <!-- Empty State -->
+        <div th:if="${recipes == null or recipes.empty}" class="text-center py-16">
+            <div class="text-6xl mb-4">🍽️</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Aucune recette dans cette catégorie</h2>
+            <p class="text-gray-600 mb-8">Soyez le premier à ajouter une recette dans cette catégorie !</p>
+            <a href="#" class="bg-recipe-orange text-white px-6 py-3 rounded-full font-bold hover:bg-recipe-red transition">
+                Ajouter une recette
+            </a>
+        </div>
+
+        <!-- Recipes Grid -->
+        <div th:if="${recipes != null and !recipes.empty}" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div th:each="recipe : ${recipes}" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                <img th:src="${recipe.imageUrl}" th:alt="${recipe.title}" 
+                     class="w-full h-48 object-cover" 
+                     onerror="this.src='https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400'">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2" th:text="${recipe.title}">Titre de la recette</h3>
+                    <p class="text-gray-600 mb-4" th:text="${#strings.abbreviate(recipe.description, 100)}">Description courte de la recette...</p>
+                    
+                    <!-- Recipe Meta -->
+                    <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                        <span class="flex items-center">
+                            ⏱️ <span class="ml-1" th:text="${recipe.totalTimeMinutes + ' min'}">30 min</span>
+                        </span>
+                        <span class="flex items-center">
+                            👥 <span class="ml-1" th:text="${recipe.servings + ' pers.'}">4 pers.</span>
+                        </span>
+                        <span class="flex items-center">
+                            ⭐ <span class="ml-1" th:text="${#numbers.formatDecimal(recipe.rating, 1, 1)}">4.5</span>
+                        </span>
+                    </div>
+
+                    <!-- Difficulty Badge -->
+                    <div class="mb-4">
+                        <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full"
+                              th:classappend="${recipe.difficulty?.name() == 'FACILE'} ? 'bg-green-100 text-green-800' : 
+                                            (${recipe.difficulty?.name() == 'MOYEN'} ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800')"
+                              th:text="${recipe.difficulty?.displayName}">Moyen</span>
+                    </div>
+                    
+                    <a th:href="@{/recipes/{id}(id=${recipe.id})}" 
+                       class="block bg-recipe-orange text-white text-center py-2 px-4 rounded hover:bg-recipe-red transition">
+                        Voir la recette
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination (placeholder) -->
+        <div th:if="${recipes != null and recipes.size() > 12}" class="text-center mt-12">
+            <button class="bg-recipe-green text-white px-6 py-3 rounded-full font-bold hover:bg-green-600 transition">
+                Charger plus de recettes
+            </button>
+        </div>
+    </div>
+
+    <!-- Related Categories -->
+    <div class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Autres Catégories</h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <!-- Placeholder pour d'autres catégories -->
+                <div class="text-center">
+                    <a href="#" class="block bg-recipe-red bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <div class="text-3xl mb-2">🥗</div>
+                        <h3 class="font-bold text-gray-800">Entrées</h3>
+                        <p class="text-sm text-gray-600">Plats d'ouverture</p>
+                    </a>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="block bg-recipe-green bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <div class="text-3xl mb-2">🍽️</div>
+                        <h3 class="font-bold text-gray-800">Plats principaux</h3>
+                        <p class="text-sm text-gray-600">Plats de résistance</p>
+                    </a>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="block bg-recipe-yellow bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <div class="text-3xl mb-2">🍰</div>
+                        <h3 class="font-bold text-gray-800">Desserts</h3>
+                        <p class="text-sm text-gray-600">Douceurs sucrées</p>
+                    </a>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="block bg-recipe-orange bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <div class="text-3xl mb-2">🥤</div>
+                        <h3 class="font-bold text-gray-800">Boissons</h3>
+                        <p class="text-sm text-gray-600">Cocktails & smoothies</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a th:href="@{/}" class="hover:text-recipe-orange">Accueil</a>
+                <a th:href="@{/recipes}" class="hover:text-recipe-orange">Recettes</a>
+                <a th:href="@{/categories}" class="hover:text-recipe-orange">Catégories</a>
+                <a th:href="@{/users}" class="hover:text-recipe-orange">Utilisateurs</a>
+            </div>
+            <p class="text-gray-400">&copy; 2025 Recipe App. Fait avec ❤️ pour les passionnés de cuisine.</p>
+        </div>
+    </footer>
+</body>
+</html>

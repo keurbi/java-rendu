@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: recipe-app
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+firebase:
+  project-id: recipe-app-bda5f
+  service-account-key-path: src/main/resources/firebase/service-account-key.json
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.example.recipeapp: DEBUG
+    com.google.cloud: INFO

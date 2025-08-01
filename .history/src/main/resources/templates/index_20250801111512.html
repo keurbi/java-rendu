@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App - Accueil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'recipe-orange': '#FF6B35',
+                        'recipe-red': '#D63031',
+                        'recipe-green': '#00B894',
+                        'recipe-yellow': '#FDCB6E'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-orange-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b-4 border-recipe-orange">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-recipe-red">🍳 Recipe App</h1>
+                </div>
+                <div class="flex space-x-6">
+                    <a th:href="@{/}" class="text-recipe-orange font-bold">Accueil</a>
+                    <a th:href="@{/recipes}" class="text-gray-700 hover:text-recipe-orange font-medium">Recettes</a>
+                    <a th:href="@{/categories}" class="text-gray-700 hover:text-recipe-orange font-medium">Catégories</a>
+                    <a th:href="@{/users}" class="text-gray-700 hover:text-recipe-orange font-medium">Utilisateurs</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-recipe-orange to-recipe-red text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-4">🍳 Bienvenue sur Recipe App</h1>
+            <p class="text-xl mb-8" th:text="${message}">Découvrez et partagez vos meilleures recettes!</p>
+            <div class="flex justify-center space-x-4">
+                <a th:href="@{/recipes}" class="bg-white text-recipe-orange px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition">
+                    Voir les Recettes
+                </a>
+                <a href="#" class="border-2 border-white text-white px-6 py-3 rounded-full font-bold hover:bg-white hover:text-recipe-orange transition">
+                    Ajouter une Recette
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Fonctionnalités</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-recipe-green">
+                    <div class="text-4xl mb-4">📚</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Gestion des Recettes</h3>
+                    <p class="text-gray-600">Créez, modifiez et organisez vos recettes préférées avec tous les détails.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-recipe-yellow">
+                    <div class="text-4xl mb-4">🏷️</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Catégories</h3>
+                    <p class="text-gray-600">Organisez vos recettes par catégories : entrées, plats, desserts...</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center border-t-4 border-recipe-red">
+                    <div class="text-4xl mb-4">👥</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Communauté</h3>
+                    <p class="text-gray-600">Partagez vos créations culinaires avec la communauté des passionnés.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-recipe-orange mb-2">0</div>
+                    <div class="text-gray-600">Recettes Disponibles</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-recipe-green mb-2">0</div>
+                    <div class="text-gray-600">Catégories</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-recipe-red mb-2">0</div>
+                    <div class="text-gray-600">Utilisateurs Actifs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Recipe App - Application de gestion de recettes</p>
+            <p class="text-sm text-gray-400 mt-2">Projet SpringBoot avec Firestore</p>
+        </div>
+    </footer>
+</body>
+</html>

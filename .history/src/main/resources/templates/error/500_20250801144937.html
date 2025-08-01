@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Erreur serveur - Recipe App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "recipe-orange": "#FF6B35",
+              "recipe-red": "#D63031",
+              "recipe-green": "#00B894",
+              "recipe-yellow": "#FDCB6E",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-orange-50 min-h-screen flex items-center justify-center">
+    <div class="text-center">
+      <div class="text-9xl mb-8">🔥</div>
+      <h1 class="text-6xl font-bold text-gray-800 mb-4">500</h1>
+      <h2 class="text-2xl font-bold text-gray-600 mb-4">
+        Oups ! Quelque chose a brûlé...
+      </h2>
+      <p class="text-gray-500 mb-4 max-w-md mx-auto">
+        Une erreur s'est produite côté serveur. Nos chefs techniques s'occupent
+        du problème !
+      </p>
+      <p
+        th:if="${error}"
+        class="text-sm text-gray-400 mb-8 max-w-lg mx-auto font-mono bg-gray-100 p-4 rounded"
+      >
+        <span th:text="${error}">Détails de l'erreur...</span>
+      </p>
+      <div class="space-x-4">
+        <a
+          th:href="@{/}"
+          class="bg-recipe-orange text-white px-6 py-3 rounded-full font-bold hover:bg-recipe-red transition"
+        >
+          Retour à l'accueil
+        </a>
+        <button
+          onclick="location.reload()"
+          class="bg-recipe-green text-white px-6 py-3 rounded-full font-bold hover:bg-green-600 transition"
+        >
+          Réessayer
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
