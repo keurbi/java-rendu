@@ -1,12 +1,15 @@
-package com.example.recipeapp.model;
+paimport com.google.cloud.firestore.annotation.DocumentId;
+import com.google.cloud.firestore.annotation.PropertyName;
+import com.google.cloud.Timestamp;
+import jakarta.validation.constraints.*;ge com.example.recipeapp.model;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.PropertyName;
-import com.google.cloud.Timestamp;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,10 +55,10 @@ public class User {
     private List<String> favoriteRecipeIds;
     
     @PropertyName("createdAt")
-    private Timestamp createdAt;
+    private Date createdAt;
     
     @PropertyName("updatedAt")
-    private Timestamp updatedAt;
+    private Date updatedAt;
     
     @PropertyName("enabled")
     private boolean enabled = true;
@@ -87,7 +90,7 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getEmail() {
@@ -96,7 +99,7 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getPassword() {
@@ -105,7 +108,7 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getFirstName() {
@@ -114,7 +117,7 @@ public class User {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getLastName() {
@@ -123,7 +126,7 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getBio() {
@@ -132,7 +135,7 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getProfileImageUrl() {
@@ -141,7 +144,7 @@ public class User {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public List<String> getRoles() {
@@ -150,7 +153,7 @@ public class User {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public List<String> getFavoriteRecipeIds() {
@@ -159,22 +162,22 @@ public class User {
 
     public void setFavoriteRecipeIds(List<String> favoriteRecipeIds) {
         this.favoriteRecipeIds = favoriteRecipeIds;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -184,7 +187,7 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     // Méthodes utilitaires

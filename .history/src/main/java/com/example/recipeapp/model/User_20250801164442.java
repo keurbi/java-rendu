@@ -2,11 +2,11 @@ package com.example.recipeapp.model;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.PropertyName;
-import com.google.cloud.Timestamp;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,17 +52,18 @@ public class User {
     private List<String> favoriteRecipeIds;
     
     @PropertyName("createdAt")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     
     @PropertyName("updatedAt")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
     
     @PropertyName("enabled")
     private boolean enabled = true;
 
     // Constructeurs
     public User() {
-        // Les dates seront initialisées par les services
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public User(String username, String email, String password) {
@@ -87,7 +88,7 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getEmail() {
@@ -96,7 +97,7 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getPassword() {
@@ -105,7 +106,7 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getFirstName() {
@@ -114,7 +115,7 @@ public class User {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getLastName() {
@@ -123,7 +124,7 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getBio() {
@@ -132,7 +133,7 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getProfileImageUrl() {
@@ -141,7 +142,7 @@ public class User {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public List<String> getRoles() {
@@ -150,7 +151,7 @@ public class User {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public List<String> getFavoriteRecipeIds() {
@@ -159,22 +160,22 @@ public class User {
 
     public void setFavoriteRecipeIds(List<String> favoriteRecipeIds) {
         this.favoriteRecipeIds = favoriteRecipeIds;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -184,7 +185,7 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // Méthodes utilitaires

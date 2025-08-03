@@ -2,11 +2,10 @@ package com.example.recipeapp.model;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.PropertyName;
-import com.google.cloud.Timestamp;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -45,7 +44,8 @@ public class Category {
 
     // Constructeurs
     public Category() {
-        // Les dates seront initialisées par les services
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 
     public Category(String name, String description) {

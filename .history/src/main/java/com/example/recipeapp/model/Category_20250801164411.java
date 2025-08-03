@@ -2,11 +2,10 @@ package com.example.recipeapp.model;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.PropertyName;
-import com.google.cloud.Timestamp;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -45,7 +44,8 @@ public class Category {
 
     // Constructeurs
     public Category() {
-        // Les dates seront initialisées par les services
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 
     public Category(String name, String description) {
@@ -76,7 +76,7 @@ public class Category {
     public void setName(String name) {
         this.name = name;
         this.slug = generateSlug(name);
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getDescription() {
@@ -85,7 +85,7 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getColor() {
@@ -94,7 +94,7 @@ public class Category {
 
     public void setColor(String color) {
         this.color = color;
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getIconUrl() {
@@ -103,7 +103,7 @@ public class Category {
 
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getSlug() {
@@ -112,22 +112,22 @@ public class Category {
 
     public void setSlug(String slug) {
         this.slug = slug;
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -137,7 +137,7 @@ public class Category {
 
     public void setActive(boolean active) {
         this.active = active;
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // Méthodes utilitaires

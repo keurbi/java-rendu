@@ -2,10 +2,9 @@ package com.example.recipeapp.model;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.firestore.annotation.PropertyName;
-import com.google.cloud.Timestamp;
 import jakarta.validation.constraints.*;
 
-
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,10 +81,10 @@ public class Recipe {
     private boolean published = false;
     
     @PropertyName("createdAt")
-    private Timestamp createdAt;
+    private Date createdAt;
     
     @PropertyName("updatedAt")
-    private Timestamp updatedAt;
+    private Date updatedAt;
 
     // Enum pour le niveau de difficulté
     public enum DifficultyLevel {
@@ -252,79 +251,79 @@ public class Recipe {
     public String getTitle() { return title; }
     public void setTitle(String title) { 
         this.title = title; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { 
         this.description = description; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public List<Ingredient> getIngredients() { return ingredients; }
     public void setIngredients(List<Ingredient> ingredients) { 
         this.ingredients = ingredients; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public List<Instruction> getInstructions() { return instructions; }
     public void setInstructions(List<Instruction> instructions) { 
         this.instructions = instructions; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getCategoryId() { return categoryId; }
     public void setCategoryId(String categoryId) { 
         this.categoryId = categoryId; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getAuthorId() { return authorId; }
     public void setAuthorId(String authorId) { 
         this.authorId = authorId; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { 
         this.imageUrl = imageUrl; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public Integer getServings() { return servings; }
     public void setServings(Integer servings) { 
         this.servings = servings; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public Integer getPrepTimeMinutes() { return prepTimeMinutes; }
     public void setPrepTimeMinutes(Integer prepTimeMinutes) { 
         this.prepTimeMinutes = prepTimeMinutes; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public Integer getCookTimeMinutes() { return cookTimeMinutes; }
     public void setCookTimeMinutes(Integer cookTimeMinutes) { 
         this.cookTimeMinutes = cookTimeMinutes; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public DifficultyLevel getDifficulty() { return difficulty; }
     public void setDifficulty(DifficultyLevel difficulty) { 
         this.difficulty = difficulty; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public List<String> getTags() { return tags; }
     public void setTags(List<String> tags) { 
         this.tags = tags; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public NutritionInfo getNutritionInfo() { return nutritionInfo; }
     public void setNutritionInfo(NutritionInfo nutritionInfo) { 
         this.nutritionInfo = nutritionInfo; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
     public Double getRating() { return rating; }
@@ -342,14 +341,14 @@ public class Recipe {
     public boolean isPublished() { return published; }
     public void setPublished(boolean published) { 
         this.published = published; 
-        this.updatedAt = Timestamp.now();
+        this.updatedAt = new Date();
     }
 
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
-    public Timestamp getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
+    public Date getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
     // Méthodes utilitaires
     public Integer getTotalTimeMinutes() {
